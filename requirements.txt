@@ -6,7 +6,6 @@ import folium
 import math
 from streamlit_folium import folium_static
 import warnings
-warnings.filterwarnings('ignore')
 from sklearn.preprocessing import Normalizer, MinMaxScaler
 from math import pi
 from matplotlib.patches import Patch
