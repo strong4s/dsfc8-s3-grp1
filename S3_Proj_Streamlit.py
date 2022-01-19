@@ -37,7 +37,8 @@ st.markdown(""" <style>
         </style>
                 """, unsafe_allow_html=True)
 st.title("A Ben&Ben Collaboration Playlist Recommender")
-st.write("Create a playlist featuring Ben&Ben and other OPM artists by defining the mood, and how similar are their features.")
+st.write("Create a playlist featuring Ben&Ben and other similar OPM artists."
+st.write("Define the mood, cherry-pick artists, and fine-tune their features: this is an ML-assisted recommender with your personal touch.")
 # st.subheader("Sprint 3 | Group 1")
 
 page_selection = st.sidebar.radio(label="How are you feeling today?",options=["","Hopeful","Sawi"])
@@ -94,7 +95,8 @@ if page_selection == 'Hopeful':
             df_recomm = pd.concat([df_bb_out,df_out])
             df_recomm = df_recomm.sample(frac=1).reset_index(drop=True)
             df_recomm
-            st.write("You may press the GENERATE PLAYLIST button again, or re-define your preferences.")
+            st.write("You may press the GENERATE PLAYLIST button again")
+            st.write("OR redefine your preferences.")
         else:
             ""
         
@@ -128,26 +130,28 @@ if page_selection == 'Hopeful':
             
             artists_onpage = df_hope_COS["artist_name"].unique()
             artists_mask = st.multiselect("Filter with the artists you want",options=artists_onpage)
-            st.header("Here is the tracks recommendation pool")
+            st.header("Here is the recommended tracks pool")
             df_out = df_hope_COS.loc[(df_hope_COS["artist_name"].isin(artists_mask)) & (df_hope_COS["cosine_dist"] >= dist_min) & (df_hope_COS["valence"] >= valence_slider) & (df_hope_COS["acousticness"] >= acc_slider)][["track_name","artist_name",'danceability', 'energy', 'loudness', 'acousticness', 'valence', 'tempo']]
             df_out
              # *
             
         elif filter == "No":
-            st.header("Preview your playlist here")
+            st.header("Here is the recommended tracks pool")
             df_out = df_hope_COS.loc[ (df_hope_COS["cosine_dist"] >= dist_min) & (df_hope_COS["valence"] >= valence_slider) & (df_hope_COS["acousticness"] >= acc_slider)][["track_name","artist_name",'danceability', 'energy', 'loudness', 'acousticness', 'valence', 'tempo']]
             df_out
             
         
         if st.button('GENERATE PLAYLIST'):
             st.header("Here is your randomized playlist with Ben & Ben tracks!")
-            rand = np.random.choice(df_hope_bb.index, math.ceil(len(df_out.index)/2)+3, replace=False)
+            # df_out [index, track_name, artist_name]
+            rand = np.random.choice(df_hope_bb.index, math.ceil(len(df_out.index)/2)+3)
             df_bb_out = df_hope_bb.loc[rand,["track_name","artist_name",'danceability', 'energy', 'loudness', 'acousticness', 'valence', 'tempo']]
+            df_bb_out.drop_duplicates(inplace=True)
             df_recomm = pd.concat([df_bb_out,df_out])
             df_recomm = df_recomm.sample(frac=1).reset_index(drop=True)
             df_recomm
-            st.write("You may press the GENERATE PLAYLIST button again, or re-define your preferences.")
-        
+            st.write("You may press the GENERATE PLAYLIST button again")
+            st.write("OR redefine your preferences.")
         else:
             ""
             # st.sidebar.
@@ -187,12 +191,12 @@ elif page_selection == "Sawi":
             # 'danceability', 'energy', 'loudness', 'acousticness', 'valence', 'tempo'
             artists_onpage = df_sawi_EUC["artist_name"].unique()
             artists_mask = st.multiselect("Filter with the artists you want",options=artists_onpage)
-            st.header("Here is the tracks recommendation pool")
+            st.header("Here is the recommended tracks pool")
             df_out = df_sawi_EUC.loc[(df_sawi_EUC["artist_name"].isin(artists_mask)) & (df_sawi_EUC["euclidean_dist"] >= dist_min) & (df_sawi_EUC["valence"] >= valence_slider) & (df_sawi_EUC["acousticness"] >= acc_slider)][["track_name","artist_name",'danceability', 'energy', 'loudness', 'acousticness', 'valence', 'tempo']]
             df_out
             
         elif filter == "No":
-            st.header("Here is the tracks recommendation pool")        
+            st.header("Here is the recommended tracks pool")        
             df_out = df_sawi_EUC.loc[(df_sawi_EUC["euclidean_dist"] >= dist_min) & (df_sawi_EUC["valence"] >= valence_slider) & (df_sawi_EUC["acousticness"] >= acc_slider)][["track_name","artist_name",'danceability', 'energy', 'loudness', 'acousticness', 'valence', 'tempo']]      
             df_out
         
@@ -201,13 +205,14 @@ elif page_selection == "Sawi":
         if st.button('GENERATE PLAYLIST'):
             st.header("Here is your randomized playlist with Ben & Ben tracks!")
             # df_out [index, track_name, artist_name]
-            rand = np.random.choice(df_sawi_bb.index, math.ceil(len(df_out.index)/2)+3, replace=False)
+            rand = np.random.choice(df_sawi_bb.index, math.ceil(len(df_out.index)/2)+3)
             df_bb_out = df_sawi_bb.loc[rand,["track_name","artist_name",'danceability', 'energy', 'loudness', 'acousticness', 'valence', 'tempo']]
-            # df_bb_out
+            df_bb_out.drop_duplicates(inplace=True)
             df_recomm = pd.concat([df_bb_out,df_out])
             df_recomm = df_recomm.sample(frac=1).reset_index(drop=True)
             df_recomm
-            st.write("You may press the GENERATE PLAYLIST button again, or re-define your preferences.")
+            st.write("You may press the GENERATE PLAYLIST button again")
+            st.write("OR redefine your preferences.")
         else:
             ""
     
@@ -237,24 +242,27 @@ elif page_selection == "Sawi":
             
             artists_onpage = df_sawi_COS["artist_name"].unique()
             artists_mask = st.multiselect("Filter with the artists you want",options=artists_onpage)
-            st.header("Here is the tracks recommendation pool")
+            st.header("Here is the recommended tracks pool")
             df_out = df_sawi_COS.loc[(df_sawi_COS["artist_name"].isin(artists_mask)) & (df_sawi_COS["cosine_dist"] >= dist_min) & (df_sawi_COS["valence"] >= valence_slider) & (df_sawi_COS["acousticness"] >= acc_slider)][["track_name","artist_name",'danceability', 'energy', 'loudness', 'acousticness', 'valence', 'tempo']]
             df_out
 
         # ! ONGOING   
         elif filter == "No":
-            st.header("Preview your playlist here")
+            st.header("Here is the recommended tracks pool")
             df_out = df_sawi_COS.loc[ (df_sawi_COS["cosine_dist"] >= dist_min) & (df_sawi_COS["valence"] >= valence_slider) & (df_sawi_COS["acousticness"] >= acc_slider)][["track_name","artist_name",'danceability', 'energy', 'loudness', 'acousticness', 'valence', 'tempo']]
             df_out
             
         
         if st.button('GENERATE PLAYLIST'):
             st.header("Here is your randomized playlist with Ben & Ben tracks!")
-            rand = np.random.choice(df_sawi_bb.index, math.ceil(len(df_out.index)/2)+3, replace=False)
-            df_bb_out = df_hope_bb.loc[rand,["track_name","artist_name",'danceability', 'energy', 'loudness', 'acousticness', 'valence', 'tempo']]
+            # df_out [index, track_name, artist_name]
+            rand = np.random.choice(df_sawi_bb.index, math.ceil(len(df_out.index)/2)+3)
+            df_bb_out = df_sawi_bb.loc[rand,["track_name","artist_name",'danceability', 'energy', 'loudness', 'acousticness', 'valence', 'tempo']]
+            df_bb_out.drop_duplicates(inplace=True)
             df_recomm = pd.concat([df_bb_out,df_out])
             df_recomm = df_recomm.sample(frac=1).reset_index(drop=True)
             df_recomm
-            st.write("You may press the GENERATE PLAYLIST button again, or re-define your preferences.")
+            st.write("You may press the GENERATE PLAYLIST button again")
+            st.write("OR redefine your preferences.")
         else:
             ""
