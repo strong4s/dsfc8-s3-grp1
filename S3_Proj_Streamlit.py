@@ -37,7 +37,7 @@ st.markdown(""" <style>
         </style>
                 """, unsafe_allow_html=True)
 st.title("A Ben&Ben Collaboration Playlist Recommender")
-st.write("Create a playlist featuring Ben&Ben and other similar OPM artists."
+st.write("Create a playlist featuring Ben&Ben and other similar OPM artists.")
 st.write("Define the mood, cherry-pick artists, and fine-tune their features: this is an ML-assisted recommender with your personal touch.")
 # st.subheader("Sprint 3 | Group 1")
 
