@@ -20,7 +20,7 @@ pd.set_option('max_columns', 100)
 # df_BB_TracksData=pd.read_csv("/home/fqp/Documents/0 Study/3 Data Science Cohort 8_Eskwelabs/Sprint 3 Folder/BenBen_playlist_tracks_data.csv")
 # df_spot2 = pd.read_csv('/home/fqp/Documents/0 Study/3 Data Science Cohort 8_Eskwelabs/Sprint 3 Folder/spotify_tracks_withgenre.csv')
 # df_spot = pd.read_csv('/home/fqp/Documents/0 Study/3 Data Science Cohort 8_Eskwelabs/Sprint 3 Folder/dsf-c8-sprint3/data/spotify_daily_charts_tracks_rec_pool.csv')
-df_hope_bb = pd.read_csv('/dsfc8-s3-grp1/data/hopeful_df.csv')
+df_hope_bb = pd.read_csv('data/hopeful_df.csv')
 df_sawi_bb = pd.read_csv('/dsfc8-s3-grp1/data/sawi_df.csv')
 
 df_hope_EUC = pd.read_csv('/dsfc8-s3-grp1/data/hope_EUC.csv')
