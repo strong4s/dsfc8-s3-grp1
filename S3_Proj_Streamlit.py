@@ -36,13 +36,14 @@ st.markdown(""" <style>
             }
         </style>
                 """, unsafe_allow_html=True)
-st.title("Suggesting a Ben&Ben Collaboration Playlist")
+st.title("A Ben&Ben Collaboration Playlist Recommender")
+st.write("Create a playlist featuring Ben&Ben and other OPM artists by defining the mood, and how similar are their features.")
 # st.subheader("Sprint 3 | Group 1")
 
 page_selection = st.sidebar.radio(label="How are you feeling today?",options=["","Hopeful","Sawi"])
 
 if page_selection == 'Hopeful':
-    st.sidebar.subheader("Further define your playlist by through the sidebar, and with the main page prompts.")
+    st.sidebar.subheader("Further define your playlist through the sidebar and the main page prompts.")
     
     #? MOOD
     sim_mes = st.sidebar.selectbox(label="Similarity Measure",options=["","Euclidean","Cosine"])
@@ -66,19 +67,19 @@ if page_selection == 'Hopeful':
         df_hope_bb[["track_name","artist_name"]]
         
         # ? Artists Filter
-        filter = st.radio(label="Do you want to manually filter the other artists?",options=["","Yes","No"])
+        filter = st.radio(label="Do you want to manually filter the collaboration artists?",options=["","Yes","No"])
         if filter == "Yes":
             st.subheader('These are other hopeful songs from prospect collaboration artists')
             df_hope_EUC[["track_name","artist_name"]]
             # 'danceability', 'energy', 'loudness', 'acousticness', 'valence', 'tempo'
             artists_onpage = df_hope_EUC["artist_name"].unique()
             artists_mask = st.multiselect("Filter with the artists you want",options=artists_onpage)
-            st.header("Here is the tracks recommendation pool")
+            st.header("Here is the recommended tracks pool")
             df_out = df_hope_EUC.loc[(df_hope_EUC["artist_name"].isin(artists_mask)) & (df_hope_EUC["euclidean_dist"] >= dist_min) & (df_hope_EUC["valence"] >= valence_slider) & (df_hope_EUC["acousticness"] >= acc_slider)][["track_name","artist_name",'danceability', 'energy', 'loudness', 'acousticness', 'valence', 'tempo']]
             df_out
             
         elif filter == "No":
-            st.header("Here is the tracks recommendation pool")        
+            st.header("Here is the recommended tracks pool")        
             df_out = df_hope_EUC.loc[(df_hope_EUC["euclidean_dist"] >= dist_min) & (df_hope_EUC["valence"] >= valence_slider) & (df_hope_EUC["acousticness"] >= acc_slider)][["track_name","artist_name",'danceability', 'energy', 'loudness', 'acousticness', 'valence', 'tempo']]      
             df_out
         
@@ -87,9 +88,9 @@ if page_selection == 'Hopeful':
         if st.button('GENERATE PLAYLIST'):
             st.header("Here is your randomized playlist with Ben & Ben tracks!")
             # df_out [index, track_name, artist_name]
-            rand = np.random.choice(df_hope_bb.index, math.ceil(len(df_out.index)/2)+3, replace=False)
+            rand = np.random.choice(df_hope_bb.index, math.ceil(len(df_out.index)/2)+3)
             df_bb_out = df_hope_bb.loc[rand,["track_name","artist_name",'danceability', 'energy', 'loudness', 'acousticness', 'valence', 'tempo']]
-            # df_bb_out
+            df_bb_out.drop_duplicates(inplace=True)
             df_recomm = pd.concat([df_bb_out,df_out])
             df_recomm = df_recomm.sample(frac=1).reset_index(drop=True)
             df_recomm
